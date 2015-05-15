@@ -1,0 +1,17 @@
+﻿#IDE files #
+################
+.settings
+.project
+.classpath
+*.iml
+*.log
+.idea
+.metadata
+.springBeans
+.tern-project
+target/
+bin/
+
+#GIT #
+######
+.git
