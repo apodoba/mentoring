@@ -79,7 +79,7 @@ public class Card implements Serializable{
 	
 	@Override
 	public String toString() {
-		return new ToStringBuilder(this).append("number", number)
+		return new ToStringBuilder(this).append("id", id).append("number", number)
 				.append("cvv", cvv).append("end year", endYear).append("count", count.doubleValue()).toString();
 	}
 
@@ -95,7 +95,7 @@ public class Card implements Serializable{
 			return false;
 		}
 		Card card = (Card) obj;
-		return new EqualsBuilder().append(number, card.number)
+		return new EqualsBuilder().append(id, card.id).append(number, card.number)
 				.append(cvv, card.cvv).append(endYear, card.endYear)
 				.append(count, card.count)
 				.isEquals();
@@ -103,7 +103,7 @@ public class Card implements Serializable{
 
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder(17, 37).append(number).append(cvv)
+		return new HashCodeBuilder(17, 37).append(id).append(number).append(cvv)
 				.append(endYear).append(count).toHashCode();
 	}
 }

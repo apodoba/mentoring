@@ -3,8 +3,8 @@ package com.apodoba.shop.beans;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
-import com.apodoba.shop.domain.bank.Card;
-import com.apodoba.shop.domain.shop.User;
+import com.apodoba.shop.domain.bank.Transaction;
+import com.apodoba.shop.domain.shop.Audit;
 
 @Stateless
 public class PurchaseBeanImpl implements PurchaseBean {
@@ -16,9 +16,10 @@ public class PurchaseBeanImpl implements PurchaseBean {
 	private ShopBean shopBean;
 
 	@Override
-	public void saveUser(User user, Card card) {
-		shopBean.save(user);
-		cardBean.save(card);
+	public void savePurchase(Audit audit, Transaction transaction) {
+		shopBean.saveAudit(audit);
+		cardBean.saveTransaction(transaction);
 	}
+
 
 }

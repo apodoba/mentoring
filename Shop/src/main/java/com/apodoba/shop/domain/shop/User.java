@@ -25,9 +25,6 @@ public class User implements Serializable {
 	private int id;
 
 	@Column
-	private String login;
-
-	@Column
 	private String password;
 
 	@Column
@@ -45,14 +42,6 @@ public class User implements Serializable {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public String getLogin() {
-		return login;
-	}
-
-	public void setLogin(String login) {
-		this.login = login;
 	}
 
 	public String getPassword() {
@@ -89,8 +78,9 @@ public class User implements Serializable {
 
 	@Override
 	public String toString() {
-		return new ToStringBuilder(this).append("firstName", firstName)
-				.append("lastName", lastName).append("mail", mail).toString();
+		return new ToStringBuilder(this).append("id", id)
+				.append("firstName", firstName).append("lastName", lastName)
+				.append("mail", mail).toString();
 	}
 
 	@Override
@@ -105,16 +95,16 @@ public class User implements Serializable {
 			return false;
 		}
 		User user = (User) obj;
-		return new EqualsBuilder().append(lastName, user.lastName)
-				.append(firstName, user.firstName).append(login, user.login)
-				.append(mail, user.mail).append(password, user.password)
-				.isEquals();
+		return new EqualsBuilder().append(id, user.id)
+				.append(lastName, user.lastName)
+				.append(firstName, user.firstName).append(mail, user.mail)
+				.append(password, user.password).isEquals();
 	}
 
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder(17, 37).append(lastName).append(firstName)
-				.append(login).append(password).append(mail).toHashCode();
+		return new HashCodeBuilder(17, 37).append(id).append(lastName)
+				.append(firstName).append(password).append(mail).toHashCode();
 	}
 
 }
