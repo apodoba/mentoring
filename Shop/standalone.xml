@@ -28,6 +28,10 @@
         <extension module="org.jboss.as.weld"/>
     </extensions>
 
+    <system-properties>
+        <property name="com.arjuna.ats.arjuna.allowMultipleLastResources" value="true"/>
+    </system-properties>
+
     <management>
         <security-realms>
             <security-realm name="ManagementRealm">
@@ -103,6 +107,30 @@
                 </datasource>
                 <datasource jndi-name="java:/shop" pool-name="shop" enabled="true" use-java-context="true">
                     <connection-url>jdbc:mysql://localhost:3306/shop</connection-url>
+                    <driver>mysqlDriver</driver>
+                    <security>
+                        <user-name>root</user-name>
+                        <password>1111</password>
+                    </security>
+                </datasource>
+                <datasource jndi-name="java:/bank" pool-name="bank" enabled="true" use-java-context="true">
+                    <connection-url>jdbc:mysql://localhost:3306/bank</connection-url>
+                    <driver>mysqlDriver</driver>
+                    <security>
+                        <user-name>root</user-name>
+                        <password>1111</password>
+                    </security>
+                </datasource>
+                <datasource jndi-name="java:/dataSource2" pool-name="dataSource2" enabled="true" use-java-context="true">
+                    <connection-url>jdbc:mysql://localhost:3306/dataSource2</connection-url>
+                    <driver>mysqlDriver</driver>
+                    <security>
+                        <user-name>root</user-name>
+                        <password>1111</password>
+                    </security>
+                </datasource>
+                <datasource jndi-name="java:/dataSource1" pool-name="dataSource1" enabled="true" use-java-context="true">
+                    <connection-url>jdbc:mysql://localhost:3306/dataSource1</connection-url>
                     <driver>mysqlDriver</driver>
                     <security>
                         <user-name>root</user-name>
