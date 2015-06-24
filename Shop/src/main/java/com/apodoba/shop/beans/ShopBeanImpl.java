@@ -1,9 +1,11 @@
 package com.apodoba.shop.beans;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -24,11 +26,15 @@ public class ShopBeanImpl implements ShopBean {
 
 	@Override
 	public User getUser(String mail, String password) {
-		User user = (User) entityManagerShop.createQuery("SELECT user FROM User user WHERE user.mail = :mail AND user.password = :password")
-			    .setParameter("mail", mail)
-			    .setParameter("password", password)
-			    .getSingleResult();
-		
+		User user = null;
+		try {
+			user = (User) entityManagerShop
+					.createQuery("SELECT user FROM User user WHERE user.mail = :mail AND user.password = :password")
+					.setParameter("mail", mail)
+					.setParameter("password", password).getSingleResult();
+		} catch (NoResultException e) {
+			user = null;
+		}
 		return user;
 	}
 
@@ -36,7 +42,12 @@ public class ShopBeanImpl implements ShopBean {
 	@SuppressWarnings("unchecked")
 	public List<Service> getAllServices() {
 		Query query = entityManagerShop.createQuery("SELECT services FROM Service services");
-		List<Service> results = query.getResultList();
+		List<Service> results = null;
+		try {
+			results = query.getResultList();
+		} catch (NoResultException e) {
+			results = Collections.emptyList();
+		}
 		return results;
 	}
 
