@@ -24,7 +24,7 @@ public class ShopBeanImpl implements ShopBean {
 
 	@Override
 	public User getUser(String mail, String password) {
-		User user = (User) entityManagerShop.createQuery("SELECT user FROM User user WHERE user.mail = :mail AND user.password :password")
+		User user = (User) entityManagerShop.createQuery("SELECT user FROM User user WHERE user.mail = :mail AND user.password = :password")
 			    .setParameter("mail", mail)
 			    .setParameter("password", password)
 			    .getSingleResult();
