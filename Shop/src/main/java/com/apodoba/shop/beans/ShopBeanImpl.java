@@ -51,4 +51,30 @@ public class ShopBeanImpl implements ShopBean {
 		return results;
 	}
 
+	@Override
+	public User getUserByEmail(String mail) {
+		User user = null;
+		try {
+			user = (User) entityManagerShop
+					.createQuery("SELECT user FROM User user WHERE user.mail = :mail")
+					.setParameter("mail", mail).getSingleResult();
+		} catch (NoResultException e) {
+			user = null;
+		}
+		return user;
+	}
+	
+	@Override
+	public Service getServiceById(int id) {
+		Service service = null;
+		try {
+			service = (Service) entityManagerShop
+					.createQuery("SELECT service FROM Service service WHERE service.id = :id")
+					.setParameter("id", id).getSingleResult();
+		} catch (NoResultException e) {
+			service = null;
+		}
+		return service;
+	}
+
 }

@@ -19,4 +19,8 @@ public interface PurchaseBean {
 	public User getUser(String mail, String password);
 
 	public List<Service> getAllServices();
+	
+	public User getUserByEmail(String mail);
+	
+	public Service getServiceById(int id);
 }

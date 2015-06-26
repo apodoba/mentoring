@@ -35,6 +35,9 @@ public class User implements Serializable {
 
 	@Column
 	private String mail;
+	
+	@Column
+	private String role;
 
 	public int getId() {
 		return id;
@@ -74,6 +77,14 @@ public class User implements Serializable {
 
 	public void setMail(String mail) {
 		this.mail = mail;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
 	}
 
 	@Override

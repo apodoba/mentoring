@@ -17,5 +17,8 @@ public interface ShopBean {
 	
 	public List<Service> getAllServices();
 	
+	public User getUserByEmail(String mail);
+	
+	public Service getServiceById(int id);
 }
 

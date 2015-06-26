@@ -57,10 +57,21 @@ public class PurchaseBeanImpl implements PurchaseBean {
 	public User getUser(String mail, String password) {
 		return shopBean.getUser(mail, password);
 	}
+	
+
+	@Override
+	public User getUserByEmail(String mail) {
+		return shopBean.getUserByEmail(mail);
+	}
 
 	@Override
 	public List<Service> getAllServices() {
 		return shopBean.getAllServices();
+	}
+
+	@Override
+	public Service getServiceById(int id) {
+		return shopBean.getServiceById(id);
 	}
 
 
