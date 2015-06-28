@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS `Audit`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Audit` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `service_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `date` datetime NOT NULL,
@@ -33,9 +33,9 @@ CREATE TABLE `Audit` (
   PRIMARY KEY (`id`),
   KEY `fk_user_id_idx` (`user_id`),
   KEY `fk_service_id_idx` (`service_id`),
-  CONSTRAINT `fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `User` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_service_id` FOREIGN KEY (`service_id`) REFERENCES `Service` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  CONSTRAINT `fk_service_id` FOREIGN KEY (`service_id`) REFERENCES `Service` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `User` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -44,7 +44,7 @@ CREATE TABLE `Audit` (
 
 LOCK TABLES `Audit` WRITE;
 /*!40000 ALTER TABLE `Audit` DISABLE KEYS */;
-INSERT INTO `Audit` VALUES (1,1,1,'2015-06-12 00:00:00','10');
+INSERT INTO `Audit` VALUES (1,1,1,'2015-06-28 14:26:14','10'),(2,1,1,'2015-06-28 14:37:04','10');
 /*!40000 ALTER TABLE `Audit` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -82,11 +82,11 @@ DROP TABLE IF EXISTS `User`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `User` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `login` varchar(45) NOT NULL,
   `password` varchar(45) NOT NULL,
   `firstname` varchar(45) NOT NULL,
   `lastname` varchar(45) NOT NULL,
   `mail` varchar(45) NOT NULL,
+  `role` varchar(45) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -97,7 +97,7 @@ CREATE TABLE `User` (
 
 LOCK TABLES `User` WRITE;
 /*!40000 ALTER TABLE `User` DISABLE KEYS */;
-INSERT INTO `User` VALUES (1,'arina','1111','Arina','Podoba','arinapodoba@gmail.com');
+INSERT INTO `User` VALUES (1,'1111','Arina','Podoba','arinapodoba@gmail.com','USER');
 /*!40000 ALTER TABLE `User` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -110,7 +110,7 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-06-21  4:49:03
+-- Dump completed on 2015-06-28 14:50:04
 CREATE DATABASE  IF NOT EXISTS `bank` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE `bank`;
 -- MySQL dump 10.13  Distrib 5.5.43, for debian-linux-gnu (x86_64)
@@ -139,7 +139,7 @@ DROP TABLE IF EXISTS `Card`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Card` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `number` int(11) NOT NULL,
+  `number` bigint(20) NOT NULL,
   `cvv` int(3) DEFAULT NULL,
   `end_year` int(4) NOT NULL,
   `count` varchar(45) NOT NULL,
@@ -153,7 +153,7 @@ CREATE TABLE `Card` (
 
 LOCK TABLES `Card` WRITE;
 /*!40000 ALTER TABLE `Card` DISABLE KEYS */;
-INSERT INTO `Card` VALUES (1,2147483647,233,2018,'10');
+INSERT INTO `Card` VALUES (1,2147483647999999,233,2018,'80');
 /*!40000 ALTER TABLE `Card` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -165,15 +165,15 @@ DROP TABLE IF EXISTS `Transaction`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Transaction` (
-  `idT` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `card_id` int(11) NOT NULL,
   `date` datetime NOT NULL,
   `count` varchar(45) NOT NULL,
   `additional_info` varchar(45) NOT NULL,
-  PRIMARY KEY (`idT`),
+  PRIMARY KEY (`id`),
   KEY `fk_card_id_idx` (`card_id`),
   CONSTRAINT `fk_card_id` FOREIGN KEY (`card_id`) REFERENCES `Card` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -182,7 +182,7 @@ CREATE TABLE `Transaction` (
 
 LOCK TABLES `Transaction` WRITE;
 /*!40000 ALTER TABLE `Transaction` DISABLE KEYS */;
-INSERT INTO `Transaction` VALUES (1,1,'2015-06-12 00:00:00','10','pay for phone');
+INSERT INTO `Transaction` VALUES (1,1,'2015-06-28 14:26:14','10','Pay for mobile phone'),(2,1,'2015-06-28 14:37:04','10','Pay for mobile phone');
 /*!40000 ALTER TABLE `Transaction` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -195,4 +195,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-06-21  4:49:03
+-- Dump completed on 2015-06-28 14:50:04

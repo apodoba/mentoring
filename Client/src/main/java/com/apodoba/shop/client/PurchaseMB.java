@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
@@ -44,6 +43,10 @@ public class PurchaseMB {
 	}
 
 	public void payForService() {
+		if(paymentCount.compareTo(new BigDecimal(0))<=0){
+			Util.sendErrorMessageToUser("Payment could not be empty", FacesContext.getCurrentInstance());
+			return;
+		}
 		User user = userMB.getUser();
 		Service service = purchaseBean.getServiceById(serviceForPay);
 		Card card = new Card();
@@ -53,31 +56,14 @@ public class PurchaseMB {
 
 		try {
 			purchaseBean.savePurchase(user, service, card, paymentCount);
-			sendInfoMessageToUser("Successful payment");
+			Util.sendInfoMessageToUser("Successful payment", FacesContext.getCurrentInstance());
 		} catch (CardNotExistException e) {
-			sendErrorMessageToUser("Such card not exist");
+			Util.sendErrorMessageToUser("Such card not exist", FacesContext.getCurrentInstance());
 		} catch (NotEnoughMoneyException e) {
-			sendErrorMessageToUser("Not enough money on card");
+			Util.sendErrorMessageToUser("Not enough money on card", FacesContext.getCurrentInstance());
 		}
 	}
-
-	private void sendInfoMessageToUser(String message) {
-		FacesContext context = getContext();
-		context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
-				message, message));
-	}
-
-	private void sendErrorMessageToUser(String message) {
-		FacesContext context = getContext();
-		context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-				message, message));
-	}
-
-	private FacesContext getContext() {
-		FacesContext context = FacesContext.getCurrentInstance();
-		return context;
-	}
-
+	
 	public int getServiceForPay() {
 		return serviceForPay;
 	}

@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:body>
+	<h:form>
+		<h:messages />
+		<h:panelGrid columns="2" style="float: right; margin-right: 40px;">
+			<h:outputLabel value="Hello #{userMB.user.firstName} #{userMB.user.lastName}"  for="logout"/>
+			<h:commandLink id="logout" action="#{userMB.logOut()}" value="Logout" />
+			<h:outputLabel value="Register jmx mbean"  for="register"/>
+			<h:commandLink id="register" action="#{userMB.register()}" value="Run" />
+		</h:panelGrid>
+	</h:form>
+	<h:form>
+		<h:panelGrid columns="3" style="padding-top: 20px; margin-left: 10px;">
+			<h:outputLabel for="service"
+				value="Select service which you want to pay: " />
+
+			<h:selectOneMenu id="service" value="#{purchaseMB.serviceForPay}">
+				<f:selectItems value="#{purchaseMB.services}" />
+			</h:selectOneMenu>
+			<h:message for="service" />
+
+			<h:outputLabel for="count" value="Payment count: " />
+			<h:inputText type="text" id="count"
+				value="#{purchaseMB.paymentCount}"
+				converterMessage="Please enter digits only."
+				requiredMessage="Please enter count number." 
+				validatorMessage="Please enter value.">
+				<f:validateLength minimum="2" maximum="10" />
+			</h:inputText>
+			<h:message for="count" style="color:red" />
+
+			<h:outputLabel for="cardNumber" value="Card number: " />
+			<h:inputText type="text" id="cardNumber"
+				value="#{purchaseMB.cardNumber}"
+				converterMessage="Please enter digits only."
+				requiredMessage="Please enter count number."
+				validatorMessage="Please enter 16 digits.">
+				<f:validateLength minimum="16" maximum="16" />
+			</h:inputText>
+			<h:message for="cardNumber" style="color:red" />
+
+			<h:outputLabel for="cvv" value="CVV: " />
+			<h:inputText type="text" id="cvv" value="#{purchaseMB.cvv}"
+				converterMessage="Please enter digits only."
+				requiredMessage="Please enter count number."
+				validatorMessage="Please enter 3 digits.">
+				<f:validateLength minimum="3" maximum="3" />
+			</h:inputText>
+			<h:message for="cvv" style="color:red" />
+
+			<h:outputLabel for="year" value="Year: " />
+			<h:inputText type="text" id="year" value="#{purchaseMB.year}"
+				converterMessage="Please enter digits only."
+				requiredMessage="Please enter count number."
+				validatorMessage="Please enter 4 digits.">
+				<f:validateLength minimum="4" maximum="4" />
+			</h:inputText>
+			<h:message for="year" style="color:red" />
+		</h:panelGrid>
+		<h:panelGrid columns="1" style="margin-left: 10px;">
+			<h:commandButton action="#{purchaseMB.payForService()}" value="Pay" />
+		</h:panelGrid>
+
+	</h:form>
+</h:body>
+</html>

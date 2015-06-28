@@ -6,7 +6,11 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
+		<version.org.jboss.as.plugins.maven.plugin>7.3.Final</version.org.jboss.as.plugins.maven.plugin>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.jboss</groupId>
@@ -47,4 +51,18 @@
 			<version>2.1</version>
 		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.jboss.as.plugins</groupId>
+				<artifactId>jboss-as-maven-plugin</artifactId>
+				<version>${version.org.jboss.as.plugins.maven.plugin}</version>
+				<configuration>
+					<filename>${project.build.finalName}.war</filename>
+				</configuration>
+			</plugin>
+		</plugins>
+
+	</build>
 </project>
