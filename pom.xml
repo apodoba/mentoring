@@ -14,5 +14,24 @@
     <module>Shop</module>
     <module>Client</module>
   </modules>
+<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
+		<version.org.jboss.as.plugins.maven.plugin>7.3.Final</version.org.jboss.as.plugins.maven.plugin>
+
+	</properties>
+	<build>
+		<!-- Set the name of the deployment -->
+		<plugins>
+			<!-- JBoss AS plugin to deploy the application -->
+			<plugin>
+				<groupId>org.jboss.as.plugins</groupId>
+				<artifactId>jboss-as-maven-plugin</artifactId>
+				<version>${version.org.jboss.as.plugins.maven.plugin}</version>
+				<configuration>
+					<filename>${project.build.finalName}.jar</filename>
+				</configuration>
+			</plugin>
+</plugins>
+</build>
 </project>
