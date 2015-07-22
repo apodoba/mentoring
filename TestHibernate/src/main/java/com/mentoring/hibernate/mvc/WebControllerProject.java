@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.mentoring.hibernate.domain.Employee;
 import com.mentoring.hibernate.domain.Project;
 import com.mentoring.hibernate.domain.Unit;
+import com.mentoring.hibernate.form.Utils;
 import com.mentoring.hibernate.repo.EmployeeDao;
 import com.mentoring.hibernate.repo.ProjectDao;
 import com.mentoring.hibernate.repo.UnitDao;
@@ -32,7 +33,6 @@ public class WebControllerProject {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String displaySortedMembers(Model model) {
-		System.out.println("GET");
 		Utils.addEditableAttributes(model, projectDao, unitDao, employeeDao);
 		Utils.addAttributes(model, projectDao, unitDao, employeeDao);
 		
@@ -45,6 +45,8 @@ public class WebControllerProject {
 			projectDao.addProject(newProject);
 			return "redirect:/";
 		} else {
+			Utils.addEditableAttributes(model, projectDao, unitDao, employeeDao);
+			Utils.addAttributes(model, projectDao, unitDao, employeeDao);
 			return "index";
 		}
 	}
@@ -55,6 +57,8 @@ public class WebControllerProject {
 			projectDao.deleteProject(id);
 			return "redirect:/";
 		} else {
+			Utils.addEditableAttributes(model, projectDao, unitDao, employeeDao);
+			Utils.addAttributes(model, projectDao, unitDao, employeeDao);
 			return "index";
 		}
 	}
@@ -63,20 +67,19 @@ public class WebControllerProject {
 	public String edit(@ModelAttribute("id") Long id, BindingResult result, Model model) {
 		model.addAttribute("editProject", projectDao.getProject(id));
 		model.addAttribute("editUnit", unitDao.getAllUnits().size()>0  ? unitDao.getAllUnits().get(0) : new Unit());
-		model.addAttribute("editEmployee", new Employee());
-		
+		model.addAttribute("editEmployee", employeeDao.getAllEmployees().size() >0  ? employeeDao.getAllEmployees().get(0) : new Employee());
 		Utils.addAttributes(model, projectDao, unitDao, employeeDao);
 		return "index";
 	}
 	
 	@RequestMapping(value="project/editProject", method = RequestMethod.POST)
 	public String editProject(@Valid @ModelAttribute("editProject") Project editProject, BindingResult result, Model model) {
-		if (!result.hasErrors()) {
+		if(editProject.getId() == null){
+			projectDao.addProject(editProject);
+		}else {
 			projectDao.editProject(editProject);
-			return "redirect:/";
-		} else {
-			return "index";
 		}
+		return "redirect:/";
 	}
 	
 }

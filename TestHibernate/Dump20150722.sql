@@ -1,10 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `jpa` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `jpa`;
--- MySQL dump 10.13  Distrib 5.5.43, for debian-linux-gnu (x86_64)
+-- MySQL dump 10.13  Distrib 5.6.17, for Win32 (x86)
 --
--- Host: 127.0.0.1    Database: jpa
+-- Host: localhost    Database: jpa
 -- ------------------------------------------------------
--- Server version	5.5.43-0ubuntu0.14.04.1
+-- Server version	5.6.23-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -18,13 +16,13 @@ USE `jpa`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `Employee`
+-- Table structure for table `employee`
 --
 
-DROP TABLE IF EXISTS `Employee`;
+DROP TABLE IF EXISTS `employee`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Employee` (
+CREATE TABLE `employee` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `city` varchar(45) NOT NULL,
   `street` varchar(45) NOT NULL,
@@ -35,54 +33,55 @@ CREATE TABLE `Employee` (
   `unit_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_unit_idx` (`unit_id`),
-  CONSTRAINT `fk_unit` FOREIGN KEY (`unit_id`) REFERENCES `Unit` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+  CONSTRAINT `fk_unit` FOREIGN KEY (`unit_id`) REFERENCES `unit` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `Employee`
+-- Dumping data for table `employee`
 --
 
-LOCK TABLES `Employee` WRITE;
-/*!40000 ALTER TABLE `Employee` DISABLE KEYS */;
-INSERT INTO `Employee` VALUES (5,'City3','Street4',24,14,'phone4','2015-07-22 01:29:01',NULL);
-/*!40000 ALTER TABLE `Employee` ENABLE KEYS */;
+LOCK TABLES `employee` WRITE;
+/*!40000 ALTER TABLE `employee` DISABLE KEYS */;
+INSERT INTO `employee` VALUES (6,'City','Street',13,14,'Position2','2015-07-22 06:37:33',2),(9,'City','Street',1,2,'Position','2015-07-22 07:14:25',2);
+/*!40000 ALTER TABLE `employee` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `EmployeeProject`
+-- Table structure for table `employeeproject`
 --
 
-DROP TABLE IF EXISTS `EmployeeProject`;
+DROP TABLE IF EXISTS `employeeproject`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `EmployeeProject` (
+CREATE TABLE `employeeproject` (
   `employee_id` int(11) NOT NULL,
   `project_id` int(11) NOT NULL,
   KEY `fk_employee_idx` (`employee_id`),
   KEY `fk_Project_2_idx` (`project_id`),
-  CONSTRAINT `fk_Employee_1` FOREIGN KEY (`employee_id`) REFERENCES `Employee` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Project_2` FOREIGN KEY (`project_id`) REFERENCES `Project` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_Employee_1` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Project_2` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `EmployeeProject`
+-- Dumping data for table `employeeproject`
 --
 
-LOCK TABLES `EmployeeProject` WRITE;
-/*!40000 ALTER TABLE `EmployeeProject` DISABLE KEYS */;
-/*!40000 ALTER TABLE `EmployeeProject` ENABLE KEYS */;
+LOCK TABLES `employeeproject` WRITE;
+/*!40000 ALTER TABLE `employeeproject` DISABLE KEYS */;
+INSERT INTO `employeeproject` VALUES (6,2),(6,4);
+/*!40000 ALTER TABLE `employeeproject` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `PersonalInfo`
+-- Table structure for table `personalinfo`
 --
 
-DROP TABLE IF EXISTS `PersonalInfo`;
+DROP TABLE IF EXISTS `personalinfo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `PersonalInfo` (
+CREATE TABLE `personalinfo` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `firstname` varchar(45) NOT NULL,
   `lastname` varchar(45) NOT NULL,
@@ -91,67 +90,68 @@ CREATE TABLE `PersonalInfo` (
   `employee_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_employee_idx` (`employee_id`),
-  CONSTRAINT `fk_employee` FOREIGN KEY (`employee_id`) REFERENCES `Employee` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+  CONSTRAINT `fk_employee` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `PersonalInfo`
+-- Dumping data for table `personalinfo`
 --
 
-LOCK TABLES `PersonalInfo` WRITE;
-/*!40000 ALTER TABLE `PersonalInfo` DISABLE KEYS */;
-INSERT INTO `PersonalInfo` VALUES (3,'FirstName2','LastName2','Gender2','Phone2',5),(6,'FirstName','LastName2','Gender2','Phone2',NULL),(7,'FirstName','LastName','Gender','Phone',NULL),(8,'FirstName2','LastName2','Gender2','Phone2',NULL),(9,'FirstName','LastName','Gender','Phone',NULL),(10,'FirstName','LastName','Gender2','Phone2',NULL),(11,'FirstName','LastName2','Gender2','Phone2',NULL),(12,'FirstName','LastName','Gender','Phone',NULL),(13,'FirstName','LastName','Gender','Phone',NULL);
-/*!40000 ALTER TABLE `PersonalInfo` ENABLE KEYS */;
+LOCK TABLES `personalinfo` WRITE;
+/*!40000 ALTER TABLE `personalinfo` DISABLE KEYS */;
+INSERT INTO `personalinfo` VALUES (14,'FirstName2','LastName2','Gender','Phone',6),(17,'FirstName','LastName','Gender','Phone',9);
+/*!40000 ALTER TABLE `personalinfo` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `Project`
+-- Table structure for table `project`
 --
 
-DROP TABLE IF EXISTS `Project`;
+DROP TABLE IF EXISTS `project`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Project` (
+CREATE TABLE `project` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `description` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `Project`
+-- Dumping data for table `project`
 --
 
-LOCK TABLES `Project` WRITE;
-/*!40000 ALTER TABLE `Project` DISABLE KEYS */;
-INSERT INTO `Project` VALUES (1,'Hotel','description'),(2,'mdev','alias');
-/*!40000 ALTER TABLE `Project` ENABLE KEYS */;
+LOCK TABLES `project` WRITE;
+/*!40000 ALTER TABLE `project` DISABLE KEYS */;
+INSERT INTO `project` VALUES (2,'mdev','alias'),(4,'name','description');
+/*!40000 ALTER TABLE `project` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `Unit`
+-- Table structure for table `unit`
 --
 
-DROP TABLE IF EXISTS `Unit`;
+DROP TABLE IF EXISTS `unit`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Unit` (
+CREATE TABLE `unit` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `description` varchar(45) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `Unit`
+-- Dumping data for table `unit`
 --
 
-LOCK TABLES `Unit` WRITE;
-/*!40000 ALTER TABLE `Unit` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Unit` ENABLE KEYS */;
+LOCK TABLES `unit` WRITE;
+/*!40000 ALTER TABLE `unit` DISABLE KEYS */;
+INSERT INTO `unit` VALUES (2,'unit second','description of unit second'),(3,'unit ','description');
+/*!40000 ALTER TABLE `unit` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -163,4 +163,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-07-22  2:30:24
+-- Dump completed on 2015-07-22 15:59:41

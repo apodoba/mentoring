@@ -4,7 +4,7 @@
 <html>
 
 <head>
-<title>Spring MVC Starter Application</title>
+<title>Hibernate Application</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css"
 	href="<c:url value="/static/resources/css/screen.css"/>" />
@@ -54,12 +54,16 @@
 										<td><form:input path="description" /></td>
 										<td><form:errors class="invalid" path="description" /></td>
 									</tr>
+									<tr>
+										<td><form:hidden path="id" /></td>
+									</tr>
 
 								</tbody>
 							</table>
 							<table>
 								<tr>
-									<td><input type="submit" value="Edit" class="register" />
+									<td>
+										<input type="submit" value="Edit" class="register" />
 									</td>
 								</tr>
 							</table>
@@ -70,7 +74,7 @@
 
 			<c:choose>
 				<c:when test="${projects.size()==0}">
-					<em>No registered members.</em>
+					<em>No projects.</em>
 				</c:when>
 				<c:otherwise>
 
@@ -126,7 +130,6 @@
 										<td><form:input path="description" /></td>
 										<td><form:errors class="invalid" path="description" /></td>
 									</tr>
-
 								</tbody>
 							</table>
 							<table>
@@ -149,12 +152,15 @@
 										<td><form:input path="description" /></td>
 										<td><form:errors class="invalid" path="description" /></td>
 									</tr>
-
+									<tr>
+										<td><form:hidden path="id" /></td>
+									</tr>
 								</tbody>
 							</table>
 							<table>
 								<tr>
-									<td><input type="submit" value="Edit" class="register" />
+									<td>
+										<input type="submit" value="Edit" class="register" />
 									</td>
 								</tr>
 							</table>
@@ -164,8 +170,8 @@
 
 
 			<c:choose>
-				<c:when test="${projects.size()==0}">
-					<em>No registered members.</em>
+				<c:when test="${units.size()==0}">
+					<em>No units</em>
 				</c:when>
 				<c:otherwise>
 
@@ -324,7 +330,6 @@
 							<table>
 								<tr>
 									<td>
-										<input type="hidden" value="id" name="id" id="id"/>
 										<input type="submit" value="Edit" class="register" />
 									</td>
 								</tr>
@@ -335,8 +340,8 @@
 
 
 			<c:choose>
-				<c:when test="${projects.size()==0}">
-					<em>No registered members.</em>
+				<c:when test="${employees.size()==0}">
+					<em>No employees.</em>
 				</c:when>
 				<c:otherwise>
 
@@ -352,6 +357,7 @@
 								<th>Street</th>
 								<th>Flat</th>
 								<th>House</th>
+								<th>Unit</th>
 								<th>Delete</th>
 								<th>Edit</th>
 							</tr>
@@ -367,6 +373,7 @@
 									<td style="vertical-align: top;">${employee.address.street}</td>
 									<td style="vertical-align: top;">${employee.address.flat}</td>
 									<td style="vertical-align: top;">${employee.address.house}</td>
+									<td style="vertical-align: top;">${employee.unit.name}</td>
 									<td><form:form action="/employee/delete" cssClass="button-form">
 											<input type="hidden" name="id" id="id" value="${employee.id}">
 											<input type="submit" value="Delete">
@@ -381,6 +388,62 @@
 					</table>
 				</c:otherwise>
 			</c:choose>
+		</div>
+		<div id="content">
+		<form:form action="/employee/assign/unit" commandName="unitEmployeeForm">
+			<table class="simpletablestyle">
+				<tr>
+					<td>Select Unit</td>
+					<td>
+						<form:select path="unitId">
+							<form:options items="${units}" itemLabel="name" itemValue="id"/>
+						</form:select>
+					</td>
+				</tr>
+				<tr>
+					<td>Select employee</td>
+					<td>
+						<form:select path="employeeId">
+							<form:options items="${employees}" itemLabel="personalInfo.firstName" itemValue="id"/>
+						</form:select>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="submit" value="Add to unit" class="register" style="margin-left: 0px;"/>
+					</td>
+					<td></td>
+				</tr>
+			</table>
+		</form:form>
+		</div>
+		<div id="content">
+		<form:form action="/employee/assign/project" commandName="projectEmployeeForm">
+			<table class="simpletablestyle">
+				<tr>
+					<td>Select Project</td>
+					<td>
+						<form:select path="projectId">
+							<form:options items="${projects}" itemLabel="name" itemValue="id"/>
+						</form:select>
+					</td>
+				</tr>
+				<tr>
+					<td>Select employee</td>
+					<td>
+						<form:select path="employeeId">
+							<form:options items="${employees}" itemLabel="personalInfo.firstName" itemValue="id"/>
+						</form:select>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="submit" value="Add to project" class="register" style="margin-left: 0px;"/>
+					</td>
+					<td></td>
+				</tr>
+			</table>
+		</form:form>
 		</div>
 	</div>
 </body>

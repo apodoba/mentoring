@@ -12,8 +12,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mentoring.hibernate.domain.Employee;
-import com.mentoring.hibernate.domain.PersonalInfo;
 import com.mentoring.hibernate.domain.Project;
+import com.mentoring.hibernate.domain.Unit;
 
 @Repository
 @Transactional
@@ -45,22 +45,36 @@ public class EmployeeDaoImpl implements EmployeeDao{
 
 	@Override
 	public void editEmployee(Employee employee) {
-		System.out.println("employee.getId() "+employee.getId());
-		System.out.println("employee.getId() "+employee.getPersonalInfo().getFirstName());
-		
 		Employee originalEmployee = em.find(Employee.class, employee.getId());
 		employee.setRegistrationDate(originalEmployee.getRegistrationDate());
 		
 		employee.getPersonalInfo().setId(originalEmployee.getPersonalInfo().getId());
-		employee.setRegistrationDate(originalEmployee.getRegistrationDate());
+		employee.getPersonalInfo().setEmployee(employee);
 		
 		em.merge(employee);
-		em.merge(originalEmployee.getPersonalInfo());
+	}
+	
+	@Override
+	public void assignEmployeeToUnit(Long employeeId, Long unitId) {
+		Employee employee = em.find(Employee.class, employeeId);
+		Unit unit = em.find(Unit.class, unitId); 
+		employee.setUnit(unit);
+		em.merge(employee);
 	}
 
 	@Override
 	public Employee getEmployee(long id) {
 		return em.find(Employee.class, id);
+	}
+
+	@Override
+	public void assignEmployeeToProject(Long employeeId, Long projectId) {
+		Employee employee = em.find(Employee.class, employeeId);
+		Project project = em.find(Project.class, projectId); 
+		if(!employee.getProjects().contains(project)){
+			employee.addProject(project);
+			em.merge(employee);
+		}
 	}
 
 }

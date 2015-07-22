@@ -15,4 +15,8 @@ public interface EmployeeDao {
 	public void editEmployee(Employee project);
 	
 	public Employee getEmployee(long id);
+	
+	public void assignEmployeeToUnit(Long employeeId, Long unitId);
+
+	public void assignEmployeeToProject(Long employeeId, Long projectId);
 }

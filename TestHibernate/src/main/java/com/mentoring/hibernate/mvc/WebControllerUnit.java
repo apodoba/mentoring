@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.mentoring.hibernate.domain.Employee;
 import com.mentoring.hibernate.domain.Project;
 import com.mentoring.hibernate.domain.Unit;
+import com.mentoring.hibernate.form.Utils;
 import com.mentoring.hibernate.repo.EmployeeDao;
 import com.mentoring.hibernate.repo.ProjectDao;
 import com.mentoring.hibernate.repo.UnitDao;
@@ -54,7 +55,7 @@ public class WebControllerUnit {
 	public String edit(@ModelAttribute("id") Long id, BindingResult result, Model model) {
 		model.addAttribute("editUnit", unitDao.getUnit(id));
 		model.addAttribute("editProject", projectDao.getAllProjects().size()>0  ? projectDao.getAllProjects().get(0) : new Project());
-		model.addAttribute("editEmployee", new Employee());
+		model.addAttribute("editEmployee", employeeDao.getAllEmployees().size() >0  ? employeeDao.getAllEmployees().get(0) : new Employee());
 		
 		Utils.addAttributes(model, projectDao, unitDao, employeeDao);
 		return "index";
@@ -62,11 +63,11 @@ public class WebControllerUnit {
 	
 	@RequestMapping(value="editUnit", method = RequestMethod.POST)
 	public String editProject(@Valid @ModelAttribute("editUnit") Unit editUnit, BindingResult result, Model model) {
-		if (!result.hasErrors()) {
+		if(editUnit.getId() == null){
+			unitDao.addUnit(editUnit);
+		}else {
 			unitDao.editUnit(editUnit);
-			return "redirect:/";
-		} else {
-			return "index";
-		}
+		}	
+		return "redirect:/";
 	}
 }

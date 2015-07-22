@@ -99,4 +99,15 @@ public class Employee implements Serializable {
 		this.address = address;
 	}
 
+	public List<Project> getProjects() {
+		return projects;
+	}
+
+	public void setProjects(List<Project> projects) {
+		this.projects = projects;
+	}
+
+	public void addProject(Project project) {
+		this.projects.add(project);
+	}
 }
