@@ -208,7 +208,7 @@
     </dependencies>
 
     <build>
-        <finalName>TestHibernate</finalName>
+        <finalName>HibernateTask</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
