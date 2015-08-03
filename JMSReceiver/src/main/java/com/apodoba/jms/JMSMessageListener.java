@@ -1,6 +1,5 @@
 package com.apodoba.jms;
 
-import java.math.BigDecimal;
 import java.util.Map;
 
 import javax.jms.JMSException;
@@ -42,7 +41,7 @@ public class JMSMessageListener implements MessageListener {
 		customer.setId((Long) userMap.get("id"));
 		customer.setName((String) userMap.get("firstName"));
 		customer.setSurname((String) userMap.get("lastName"));
-		customer.setCount(BigDecimal.valueOf((double) userMap.get("balance")));
+		customer.setCount((double) userMap.get("balance"));
 
 		switch (Commands.valueOf(receiveCommand.toUpperCase())) {
 		case ADD:

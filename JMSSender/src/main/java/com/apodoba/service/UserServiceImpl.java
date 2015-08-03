@@ -26,7 +26,9 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void deleteUser(long id) {
-		messageSender.sendMessage("delete", userDao.getUser(id));
+		User user = userDao.getUser(id);
+		messageSender.sendMessage("delete", user);
+		messageSender.sendToLogger("delete", user);
 		userDao.deleteUser(id);
 	}
 
@@ -34,17 +36,21 @@ public class UserServiceImpl implements UserService {
 	public void updateUser(User user) {
 		userDao.updateUser(user);
 		messageSender.sendMessage("update", user);
+		messageSender.sendToLogger("update", user);
 	}
 
 	@Override
 	public void addUser(User user) {
 		userDao.addUser(user);
 		messageSender.sendMessage("add", user);
+		messageSender.sendToLogger("add", user);
 	}
 
 	@Override
 	public User getUser(long id) {
-		return userDao.getUser(id);
+		User user = userDao.getUser(id);
+		messageSender.sendToLogger("get", user);
+		return user;
 	}
 
 }

@@ -1,7 +1,6 @@
 package com.apodoba.domain;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "User")
+@Table(name = "user")
 public class User implements Serializable {
 	
 	/**
@@ -30,7 +29,7 @@ public class User implements Serializable {
 	private String lastName;
 	
 	@Column(name = "balance", nullable = false)
-	private BigDecimal balance;
+	private Double balance;
 
 	public Long getId() {
 		return id;
@@ -56,11 +55,11 @@ public class User implements Serializable {
 		this.lastName = lastName;
 	}
 
-	public BigDecimal getBalance() {
+	public Double getBalance() {
 		return balance;
 	}
 
-	public void setBalance(BigDecimal balance) {
+	public void setBalance(Double balance) {
 		this.balance = balance;
 	}
 
