@@ -14,7 +14,7 @@ public class Main {
 	public static void main(String[] args) {
 		BlockingQueue<String> queue = new ArrayBlockingQueue<String>(200000);
 
-		String folderPath = "/home/arina/projects/Reader";
+		String folderPath = "D:\\mentoring\\General.Troubleshooting";
 		Path path = Paths.get(folderPath, "Task #5 - Data.txt");
 		Charset charset = Charset.forName("UTF-8");
 		try {
