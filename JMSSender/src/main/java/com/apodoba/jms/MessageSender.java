@@ -20,15 +20,15 @@ import com.apodoba.domain.User;
 public class MessageSender {
 
 	@Autowired
-	@Qualifier("jmsTemplate")
-	private JmsTemplate jmsTemplate;
+	@Qualifier("queueJmsTemplate")
+	private JmsTemplate queueJmsTemplate;
 
 	@Autowired
-	@Qualifier("jmsTemplate2")
-	private JmsTemplate jsmLogTemplate2;
+	@Qualifier("topicJmsTemplate")
+	private JmsTemplate topicJmsTemplate;
 
 	public void sendMessage(final String command, final User user) {
-		jmsTemplate.send(new MessageCreator() {
+		queueJmsTemplate.send(new MessageCreator() {
 
 			@Override
 			public Message createMessage(Session session) throws JMSException {
@@ -45,7 +45,7 @@ public class MessageSender {
 	}
 
 	public void sendToLogger(final String command, final User user) {
-		jsmLogTemplate2.send(new MessageCreator() {
+		topicJmsTemplate.send(new MessageCreator() {
 
 			@Override
 			public Message createMessage(Session session) throws JMSException {

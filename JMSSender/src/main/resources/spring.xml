@@ -14,7 +14,7 @@
 	<bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory"
 		p:brokerURL="tcp://localhost:61616" />
 
-	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+	<bean id="queueJmsTemplate" class="org.springframework.jms.core.JmsTemplate">
 		<constructor-arg name="connectionFactory" ref="connectionFactory"></constructor-arg>
 		<property name="defaultDestinationName" value="myqueue"></property>
 	</bean>
@@ -25,7 +25,7 @@
 		<constructor-arg value="user.topic" />
 	</bean>
 
-	<bean id="jmsTemplate2" class="org.springframework.jms.core.JmsTemplate">
+	<bean id="topicJmsTemplate" class="org.springframework.jms.core.JmsTemplate">
 		<property name="connectionFactory" ref="connectionFactory" />
 		<property name="defaultDestination" ref="mailDestination" />
 		<property name="pubSubDomain" value="true" />
