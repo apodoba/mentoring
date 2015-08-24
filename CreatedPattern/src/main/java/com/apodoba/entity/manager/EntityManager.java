@@ -11,6 +11,6 @@ public interface EntityManager {
 
 	public <T> void insert(T entity) throws Exception;
 
-	public <T> List<T> selectAll(T entity) throws Exception;
+	public <T> List<T> selectAll(Class<T> entityClass) throws Exception;
 
 }

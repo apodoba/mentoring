@@ -47,9 +47,11 @@ public class MySqlEntityManager implements EntityManager {
 		StringBuffer updateSql = new StringBuffer("update "+getClassName(entity)+" set ");
 		Field[] fields = entity.getClass().getDeclaredFields();
 		
-		for(Field field: fields){
-			if(!"id".equals(field.getName())){
-				updateSql.append(field.getName()+" = ? ");
+		for(int i = 0; i < fields.length; i++){
+			if(!"id".equals(fields[i].getName()) && i != fields.length-1){
+				updateSql.append(fields[i].getName()+" = ?, ");
+			}else if(i == fields.length-1){
+				updateSql.append(fields[i].getName() + " = ? ");
 			}
 		}
 		
@@ -110,18 +112,17 @@ public class MySqlEntityManager implements EntityManager {
 		
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public <T> List<T> selectAll(T entity) throws Exception{
+	public <T> List<T> selectAll(Class<T> entityClass) throws Exception{
 		List<T> allEntity = new ArrayList<T>();
 		
-		String selectSql = "select * from " + getClassName(entity);
+		String selectSql = "select * from " + entityClass.getSimpleName();
 		Statement statement = this.connection.createStatement();
 		
 		ResultSet resultSet = statement.executeQuery(selectSql);
 		
 		while (resultSet.next()) {
-			T selectEntity = (T) entity.getClass().newInstance();
+			T selectEntity = (T) entityClass.newInstance();
 			Field[] fields = selectEntity.getClass().getDeclaredFields();
 			
 			for(Field field: fields){
