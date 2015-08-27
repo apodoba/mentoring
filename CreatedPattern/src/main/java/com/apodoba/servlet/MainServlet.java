@@ -8,11 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.apodoba.entiry.Service;
-import com.apodoba.entiry.User;
 import com.apodoba.process.Process;
-import com.apodoba.utils.Action;
-import com.apodoba.utils.EntityType;
 
 @WebServlet(name = "mainServlet", urlPatterns = { "" })
 public class MainServlet extends HttpServlet {
@@ -40,8 +36,7 @@ public class MainServlet extends HttpServlet {
 		Process process = new Process();
 
 		if(request.getParameter("object") != null && request.getParameter("action") != null){
-			Object entity = defineObject(request);
-			processAction(entity, request, process);
+			process.process(request);
 		}
 
 		setServicesAttribute(process, request);
@@ -51,63 +46,12 @@ public class MainServlet extends HttpServlet {
 	private void setServicesAttribute(Process process, HttpServletRequest request) {
 		try {
 			request.setAttribute("services", process.getAllServices());
-			request.setAttribute("users", process.getAllUsers());
+			request.setAttribute("employees", process.getAllEmployees());
 		} catch (Exception e) {
 			request.setAttribute("error", "Could not get services");
 			e.printStackTrace();
 		}
 	}
 
-	private Object defineObject(HttpServletRequest request) {
-		Object object = null;
-		String objectType = request.getParameter("object");
-		EntityType entityType = EntityType.valueOf(objectType.toUpperCase());
-
-		switch (entityType) {
-		case SERVICE:
-			object = constructService(request);
-			break;
-		case USER:
-			object = constructUser(request);
-			break;
-		}
-		return object;
-	}
-
-	private Service constructService(HttpServletRequest request) {
-		Service service = new Service();
-		service.setId(Integer.parseInt(request.getParameter("id").isEmpty() ? "0" : request.getParameter("id")));
-		service.setName(request.getParameter("name"));
-		return service;
-	}
 	
-	private User constructUser(HttpServletRequest request) {
-		User user = new User();
-		user.setId(Integer.parseInt(request.getParameter("id").isEmpty() ? "0" : request.getParameter("id")));
-		user.setLastName(request.getParameter("lastName"));
-		user.setFirstName(request.getParameter("firstName"));
-		user.setAddress(request.getParameter("address"));
-		return user;
-	}
-
-	private void processAction(Object entity, HttpServletRequest request, Process process) {
-		String action = request.getParameter("action");
-		Action actionType = Action.valueOf(action.toUpperCase());
-		try {
-			switch (actionType) {
-			case ADD:
-				process.add(entity);
-				break;
-			case DELETE:
-				process.delete(entity);
-				break;
-			case UPDATE:
-				process.update(entity);
-				break;
-			}
-		} catch (Exception e) {
-			request.setAttribute("error", "Could not process operation");
-			e.printStackTrace();
-		}
-	}
 }

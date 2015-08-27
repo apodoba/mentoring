@@ -55,21 +55,29 @@ body {
 			<tr>
 				<th>FirstName</th>
 				<th>Lastname</th>
-				<th>Address</th>
+				<th>City</th>
+				<th>Street</th>
+				<th>Flat</th>
 			</tr>
-			<c:forEach items="${users}" var="item">
+			<c:forEach items="${employees}" var="item">
 			<form action="" method='post'>
 				<tr>
 					<td style="padding: 5px;">
 						<input type="text" name="firstName" value="${item.firstName}" /> 
 						<input type="hidden" name="id" value="${item.id}" /> 
-						<input type="hidden" name="object" value="user" />
+						<input type="hidden" name="object" value="employee" />
 					</td>
 					<td style="padding: 5px;">
 						<input type="text" name="lastName" value="${item.lastName}" /> 
 					</td>
 					<td style="padding: 5px;">
-						<input type="text" name="address" value="${item.address}" /> 
+						<input type="text" name="city" value="${item.city}" /> 
+					</td>
+					<td style="padding: 5px;">
+						<input type="text" name="street" value="${item.street}" /> 
+					</td>
+					<td style="padding: 5px;">
+						<input type="text" name="flat" value="${item.flat}" /> 
 					</td>
 					<td style="padding: 5px;"><input type="submit" name="action" value="Update"></td>
 					<td style="padding: 5px;"><input type="submit" name="action" value="Delete"></td>
@@ -81,14 +89,19 @@ body {
 					<td style="padding: 5px;">
 						<input type="text" name="firstName" value="" /> 
 						<input type="hidden" name="id" value="" /> 
-						<input type="hidden" name="object" value="user" />
+						<input type="hidden" name="object" value="employee" />
 					</td>
 					<td style="padding: 5px;">
 						<input type="text" name="lastName" value="" /> 
 					</td>
 					<td style="padding: 5px;">
-						<input type="text" name="address" value="" /> 
+						<input type="text" name="city" value="" /> 
 					</td>
+					<td style="padding: 5px;">
+						<input type="text" name="street" value="" /> 
+					</td>
+					<td style="padding: 5px;">
+						<input type="text" name="flat" value="" /> 
 					<td style="padding: 5px;"><input type="submit" name="action" value="Add"></td>
 				</tr>
 			</form>

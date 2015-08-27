@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import com.apodoba.annotation.DBField;
+import com.apodoba.annotation.DBPrimaryKey;
+import com.apodoba.annotation.DBTable;
 import com.apodoba.connection.Connection;
 import com.apodoba.connection.ConnectionPull;
 import com.apodoba.process.ProcessConnection;
@@ -29,17 +32,30 @@ public class MySqlEntityManager implements EntityManager {
 
 	@Override
 	public <T> void delete(T entity) throws Exception {
-		String deleteSql = "delete from "+ getClassName(entity) + " where id=?";
+		StringBuffer deleteSql = new StringBuffer("delete from "+ getClassName(entity) + " where ");
 		
-		Field idField = entity.getClass().getDeclaredField("id");
-		idField.setAccessible(true);
-		int id = (int) idField.get(entity);
 		
-		PreparedStatement preparedStatement = this.connection.createPreparedStatement(deleteSql);
-		preparedStatement.setInt(1, id);
+		String idName = "";
+		int idValue = -1;
+		Field[] fields = entity.getClass().getDeclaredFields();
+		for(Field field: fields){
+			if(field.isAnnotationPresent(DBPrimaryKey.class) && field.isAnnotationPresent(DBField.class)){
+				field.setAccessible(true);
+				idValue = (int) field.get(entity);
+				idName = field.getAnnotation(DBField.class).name();
+				break;
+			}
+		}
 		
-		preparedStatement.executeUpdate();
-		preparedStatement.close();
+		if(idValue != -1 && !idName.isEmpty()){
+			deleteSql.append(idName);
+			deleteSql.append("=?");
+			PreparedStatement preparedStatement = this.connection.createPreparedStatement(deleteSql.toString());
+			preparedStatement.setInt(1, idValue);
+		
+			preparedStatement.executeUpdate();
+			preparedStatement.close();
+		}
 	}
 
 	@Override
@@ -48,32 +64,48 @@ public class MySqlEntityManager implements EntityManager {
 		Field[] fields = entity.getClass().getDeclaredFields();
 		
 		for(int i = 0; i < fields.length; i++){
-			if(!"id".equals(fields[i].getName()) && i != fields.length-1){
-				updateSql.append(fields[i].getName()+" = ?, ");
-			}else if(i == fields.length-1){
-				updateSql.append(fields[i].getName() + " = ? ");
+			if(!fields[i].isAnnotationPresent(DBPrimaryKey.class) && fields[i].isAnnotationPresent(DBField.class)){
+				
+				String fieldName = fields[i].getAnnotation(DBField.class).name();
+				if(i != fields.length-1){
+					updateSql.append(fieldName+" = ?, ");
+				}else if(i == fields.length-1){
+					updateSql.append(fieldName + " = ? ");
+				}
 			}
 		}
 		
-		updateSql.append("where id=?");
-		
-		PreparedStatement preparedStatement = this.connection.createPreparedStatement(updateSql.toString());
-		int index = 1;
-		for(int i = 0; i < fields.length; i++){
-			fields[i].setAccessible(true);
-			if(!"id".equals(fields[i].getName())){
-				preparedStatement.setObject(index, fields[i].get(entity));
-				++index;
+		String idName = "";
+		int idValue = -1;
+		for(Field field: fields){
+			if(field.isAnnotationPresent(DBPrimaryKey.class) && field.isAnnotationPresent(DBField.class)){
+				field.setAccessible(true);
+				idValue = (int) field.get(entity);
+				idName = field.getAnnotation(DBField.class).name();
+				break;
 			}
 		}
 		
-		Field idField = entity.getClass().getDeclaredField("id");
-		idField.setAccessible(true);
-		int id = (int) idField.get(entity);
-		preparedStatement.setObject(index, id);
-		
-		preparedStatement.executeUpdate();
-		preparedStatement.close();
+		if(idValue != -1 && !idName.isEmpty()){
+			updateSql.append("where ");
+			updateSql.append(idName);
+			updateSql.append("=?");
+			PreparedStatement preparedStatement = this.connection.createPreparedStatement(updateSql.toString());
+			
+			int index = 1;
+			for(int i = 0; i < fields.length; i++){
+				if(!fields[i].isAnnotationPresent(DBPrimaryKey.class) && fields[i].isAnnotationPresent(DBField.class)){
+					fields[i].setAccessible(true);
+					preparedStatement.setObject(index, fields[i].get(entity));
+					++index;
+				}
+			}
+			
+			preparedStatement.setObject(index, idValue);
+
+			preparedStatement.executeUpdate();
+			preparedStatement.close();
+		}
 	}
 
 	@Override
@@ -82,26 +114,31 @@ public class MySqlEntityManager implements EntityManager {
 		Field[] fields = entity.getClass().getDeclaredFields();
 		
 		for(int i = 0; i < fields.length; i++){
-			if(!"id".equals(fields[i].getName()) && i != fields.length-1){
-				insertSql.append(fields[i].getName() + ", ");
-			}else if(i == fields.length-1){
-				insertSql.append(fields[i].getName() + ") ");
+			if(!fields[i].isAnnotationPresent(DBPrimaryKey.class) && fields[i].isAnnotationPresent(DBField.class)){
+				String fieldName = fields[i].getAnnotation(DBField.class).name();
+				if(i != fields.length-1){
+					insertSql.append(fieldName + ", ");
+				}else if(i == fields.length-1){
+					insertSql.append(fieldName + ") ");
+				}
 			}
 		}
 		
 		insertSql.append(" VALUES ( ");
 		for(int i = 0; i < fields.length; i++){
-			if(!"id".equals(fields[i].getName()) && i != fields.length-1){
-				insertSql.append("?, ");
-			}else if(i == fields.length-1){
-				insertSql.append(" ?) ");
+			if(!fields[i].isAnnotationPresent(DBPrimaryKey.class) && fields[i].isAnnotationPresent(DBField.class)){
+				if(i != fields.length-1){
+					insertSql.append("?, ");
+				}else if(i == fields.length-1){
+					insertSql.append(" ?) ");
+				}
 			}
 		}
 		
 		PreparedStatement preparedStatement = this.connection.createPreparedStatement(insertSql.toString());
 		int index = 1;
 		for(int i = 0; i < fields.length; i++){
-			if(!"id".equals(fields[i].getName())){
+			if(!fields[i].isAnnotationPresent(DBPrimaryKey.class) ){
 				fields[i].setAccessible(true);
 				preparedStatement.setObject(index, fields[i].get(entity));
 				++index;
@@ -116,7 +153,7 @@ public class MySqlEntityManager implements EntityManager {
 	public <T> List<T> selectAll(Class<T> entityClass) throws Exception{
 		List<T> allEntity = new ArrayList<T>();
 		
-		String selectSql = "select * from " + entityClass.getSimpleName();
+		String selectSql = "select * from " + entityClass.getAnnotation(DBTable.class).name();
 		Statement statement = this.connection.createStatement();
 		
 		ResultSet resultSet = statement.executeQuery(selectSql);
@@ -127,7 +164,7 @@ public class MySqlEntityManager implements EntityManager {
 			
 			for(Field field: fields){
 				field.setAccessible(true);
-				Object value = resultSet.getObject(field.getName());
+				Object value = resultSet.getObject(field.getAnnotation(DBField.class).name());
 				field.set(selectEntity, value);
 				
 			}
@@ -137,7 +174,7 @@ public class MySqlEntityManager implements EntityManager {
 	}
 
 	private <T> String getClassName(T entity){
-		return entity.getClass().getSimpleName();
+		return entity.getClass().getAnnotation(DBTable.class).name();
 	}
 
 }
